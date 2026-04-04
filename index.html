@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mohammed Fahad P — Pentester & Developer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{background:#000;color:#00ff41;font-family:'Share Tech Mono',monospace;overflow-x:hidden;min-height:100vh}
+canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.scanline{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,255,65,0.02) 2px,rgba(0,255,65,0.02) 4px);pointer-events:none;z-index:999}
+.vignette{position:fixed;top:0;left:0;width:100%;height:100%;background:radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,0.78) 100%);pointer-events:none;z-index:998}
+.container{position:relative;z-index:1;max-width:940px;margin:0 auto;padding:2rem 1.5rem 6rem}
+
+/* HERO */
+.hero{padding:3.5rem 0 2.5rem;border-bottom:1px solid rgba(0,255,65,0.15);margin-bottom:2.5rem;position:relative}
+.hero::after{content:'';position:absolute;bottom:-1px;left:0;height:1px;background:linear-gradient(90deg,#00ff41,#0088ff,transparent);animation:scanH 4s ease-in-out infinite alternate}
+@keyframes scanH{from{width:15%}to{width:72%}}
+.boot{font-size:10px;color:rgba(0,255,65,0.3);margin-bottom:0.6rem;letter-spacing:1px}
+.tag{font-size:10px;color:#00cc33;letter-spacing:3px;margin-bottom:0.9rem}
+.name{font-family:'Orbitron',monospace;font-size:clamp(2.2rem,6vw,3.8rem);font-weight:900;line-height:1.1;color:#00ff41;text-shadow:0 0 20px rgba(0,255,65,0.8),0 0 60px rgba(0,255,65,0.25)}
+.name span{color:#39ff14}
+@keyframes glitch{0%,88%,100%{text-shadow:0 0 20px rgba(0,255,65,0.8),0 0 60px rgba(0,255,65,0.25)}91%{text-shadow:-3px 0 #ff003c,3px 0 #0088ff,0 0 20px rgba(0,255,65,0.8)}94%{text-shadow:2px 0 #ff003c,-2px 0 #0088ff,0 0 20px rgba(0,255,65,0.8)}}
+.name{animation:glitch 6s ease-in-out infinite}
+.title-line{font-size:0.8rem;color:#00cc33;letter-spacing:4px;margin:0.8rem 0 0.6rem;text-transform:uppercase}
+.dual-badge{display:inline-flex;gap:0;margin-bottom:1.5rem;overflow:hidden;border:1px solid rgba(0,255,65,0.2)}
+.badge-sec{padding:5px 16px;font-size:10px;letter-spacing:2px;background:rgba(0,255,65,0.07);color:#00ff41;border-right:1px solid rgba(0,255,65,0.2)}
+.badge-dev{padding:5px 16px;font-size:10px;letter-spacing:2px;background:rgba(0,136,255,0.07);color:#0088ff}
+.summary{font-size:12.5px;color:rgba(0,255,65,0.6);line-height:1.85;max-width:680px;border-left:2px solid #00ff41;padding-left:1rem}
+.contact-row{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1.5rem}
+.contact-item{font-size:11px;color:rgba(0,255,65,0.45);display:flex;align-items:center;gap:6px}
+.contact-item span{color:#00ff41}
+a{color:#39ff14;text-decoration:none;border-bottom:1px solid rgba(57,255,20,0.25)}
+a:hover{color:#00ff41;text-shadow:0 0 8px rgba(0,255,65,0.5)}
+
+/* ROLE DIVIDER */
+.role-divider{display:flex;align-items:center;gap:14px;margin:2.8rem 0 2rem}
+.role-divider span{font-family:'Orbitron',monospace;font-size:10px;letter-spacing:3px;white-space:nowrap;text-transform:uppercase}
+.rd-sec{color:#00ff41;text-shadow:0 0 8px rgba(0,255,65,0.5)}
+.rd-dev{color:#0088ff;text-shadow:0 0 8px rgba(0,136,255,0.5)}
+.rd-edu{color:rgba(0,255,65,0.6)}
+.rd-line{flex:1;height:1px}
+.rd-line-sec{background:linear-gradient(90deg,rgba(0,255,65,0.35),transparent)}
+.rd-line-dev{background:linear-gradient(90deg,rgba(0,136,255,0.35),transparent)}
+.rd-line-edu{background:linear-gradient(90deg,rgba(0,255,65,0.2),transparent)}
+
+/* STATS */
+.stats-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:10px;margin-bottom:2.5rem}
+.stat-box{border:1px solid rgba(0,255,65,0.18);padding:1rem;text-align:center;background:rgba(0,255,65,0.02);transition:all 0.3s}
+.stat-box:hover{border-color:rgba(0,255,65,0.45);box-shadow:0 0 14px rgba(0,255,65,0.07)}
+.stat-box.blue{border-color:rgba(0,136,255,0.18);background:rgba(0,136,255,0.02)}
+.stat-box.blue:hover{border-color:rgba(0,136,255,0.45);box-shadow:0 0 14px rgba(0,136,255,0.07)}
+.stat-num{font-family:'Orbitron',monospace;font-size:1.7rem;font-weight:900;color:#00ff41;text-shadow:0 0 12px rgba(0,255,65,0.5)}
+.stat-box.blue .stat-num{color:#0088ff;text-shadow:0 0 12px rgba(0,136,255,0.5)}
+.stat-label{font-size:9px;color:rgba(0,255,65,0.35);letter-spacing:2px;margin-top:4px;text-transform:uppercase}
+.stat-box.blue .stat-label{color:rgba(0,136,255,0.35)}
+
+/* SECTION */
+.section{margin-bottom:2.5rem}
+.sec-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem}
+.sec-header.sec-green::before{content:'root@fahad:~#';color:#00ff41;font-size:11px;text-shadow:0 0 8px rgba(0,255,65,0.5)}
+.sec-header.sec-blue::before{content:'fahad@dev:~$';color:#0088ff;font-size:11px;text-shadow:0 0 8px rgba(0,136,255,0.5)}
+.sec-title{font-family:'Orbitron',monospace;font-size:11px;letter-spacing:4px;text-transform:uppercase}
+.sec-green .sec-title{color:#39ff14}
+.sec-blue .sec-title{color:#0088ff}
+.sec-header::after{content:'';flex:1;height:1px}
+.sec-green::after{background:linear-gradient(90deg,rgba(0,255,65,0.22),transparent)}
+.sec-blue::after{background:linear-gradient(90deg,rgba(0,136,255,0.22),transparent)}
+
+/* SKILLS */
+.skills-grid{display:flex;flex-wrap:wrap;gap:7px}
+.skill-tag{padding:4px 11px;border:1px solid rgba(0,255,65,0.18);background:rgba(0,255,65,0.03);font-size:10.5px;color:#00cc33;letter-spacing:1px;transition:all 0.2s;cursor:default}
+.skill-tag:hover{background:rgba(0,255,65,0.09);border-color:#00ff41;color:#00ff41;box-shadow:0 0 7px rgba(0,255,65,0.18)}
+.skill-tag.red{border-color:rgba(255,0,60,0.22);color:#ff3366;background:rgba(255,0,60,0.03)}
+.skill-tag.red:hover{background:rgba(255,0,60,0.09);border-color:#ff003c;box-shadow:0 0 7px rgba(255,0,60,0.18)}
+.skill-tag.blue{border-color:rgba(0,136,255,0.22);color:#0088ff;background:rgba(0,136,255,0.03)}
+.skill-tag.blue:hover{background:rgba(0,136,255,0.09);border-color:#0088ff;box-shadow:0 0 7px rgba(0,136,255,0.18)}
+.skill-tag.dim{border-color:rgba(0,255,65,0.1);color:rgba(0,255,65,0.4)}
+.skill-tag.dim:hover{color:rgba(0,255,65,0.7);border-color:rgba(0,255,65,0.3)}
+
+/* EXP CARDS */
+.exp-card{border:1px solid rgba(0,255,65,0.1);background:rgba(0,0,0,0.45);padding:1.25rem;margin-bottom:1rem;position:relative;overflow:hidden;transition:border-color 0.3s}
+.exp-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,#00ff41,#00cc33,#003300)}
+.exp-card:hover{border-color:rgba(0,255,65,0.28);box-shadow:0 0 18px rgba(0,255,65,0.04)}
+.exp-card.blue-card{border-color:rgba(0,136,255,0.1)}
+.exp-card.blue-card::before{background:linear-gradient(180deg,#0088ff,#0055cc,#001133)}
+.exp-card.blue-card:hover{border-color:rgba(0,136,255,0.28);box-shadow:0 0 18px rgba(0,136,255,0.04)}
+.exp-role{font-family:'Orbitron',monospace;font-size:11px;font-weight:700;color:#39ff14;letter-spacing:2px}
+.exp-card.blue-card .exp-role{color:#0088ff}
+.exp-company{color:#00cc33;font-size:10px;letter-spacing:2px;margin:4px 0 12px}
+.exp-card.blue-card .exp-company{color:#0066aa}
+.exp-item{font-size:11.5px;color:rgba(0,255,65,0.5);line-height:1.75;padding-left:1.2rem;position:relative;margin-bottom:5px}
+.exp-item::before{content:'$';position:absolute;left:0;color:#00ff41;font-size:10px}
+.exp-card.blue-card .exp-item{color:rgba(0,136,255,0.55)}
+.exp-card.blue-card .exp-item::before{content:'>';color:#0088ff}
+
+/* PROJ CARDS */
+.proj-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:10px}
+.proj-card{border:1px solid rgba(0,255,65,0.12);background:rgba(0,5,0,0.55);padding:1.2rem;position:relative;transition:all 0.3s;overflow:hidden}
+.proj-card.dev{border-color:rgba(0,136,255,0.12);background:rgba(0,5,20,0.55)}
+.proj-card::after{content:'';position:absolute;top:0;left:-100%;width:100%;height:1px;background:linear-gradient(90deg,transparent,#00ff41,transparent);transition:left 0.5s}
+.proj-card.dev::after{background:linear-gradient(90deg,transparent,#0088ff,transparent)}
+.proj-card:hover{border-color:rgba(0,255,65,0.32);transform:translateY(-2px);box-shadow:0 0 18px rgba(0,255,65,0.06)}
+.proj-card.dev:hover{border-color:rgba(0,136,255,0.32);box-shadow:0 0 18px rgba(0,136,255,0.06)}
+.proj-card:hover::after,.proj-card.dev:hover::after{left:100%}
+.proj-lang{font-size:9px;letter-spacing:2px;margin-bottom:6px;text-transform:uppercase}
+.lang-go{color:#00ffcc}.lang-py{color:#f7c948}.lang-sh{color:#a8ff78}.lang-md{color:#80ff80}.lang-java{color:#ff6b35}.lang-js{color:#ffe44d}
+.proj-name{font-family:'Orbitron',monospace;font-size:11.5px;font-weight:700;color:#00ff41;margin-bottom:7px;text-shadow:0 0 7px rgba(0,255,65,0.25)}
+.proj-card.dev .proj-name{color:#0088ff;text-shadow:0 0 7px rgba(0,136,255,0.25)}
+.proj-desc{font-size:10.5px;color:rgba(0,255,65,0.42);line-height:1.7}
+.proj-card.dev .proj-desc{color:rgba(0,136,255,0.5)}
+.proj-tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:9px}
+.proj-tag{font-size:9px;padding:2px 7px;border:1px solid rgba(0,255,65,0.16);color:rgba(0,255,65,0.45);letter-spacing:1px}
+.proj-card.dev .proj-tag{border-color:rgba(0,136,255,0.16);color:rgba(0,136,255,0.5)}
+.proj-link{display:inline-block;margin-top:10px;font-size:10px;color:#00ff41;text-decoration:none;border:1px solid rgba(0,255,65,0.22);padding:3px 9px;transition:all 0.2s;letter-spacing:1px}
+.proj-card.dev .proj-link{color:#0088ff;border-color:rgba(0,136,255,0.22)}
+.proj-link:hover{background:rgba(0,255,65,0.08);border-color:#00ff41;box-shadow:none}
+.proj-card.dev .proj-link:hover{background:rgba(0,136,255,0.08);border-color:#0088ff}
+
+/* CERTS */
+.cert-list{display:flex;flex-direction:column;gap:8px}
+.cert-item{display:flex;align-items:flex-start;gap:10px;padding:10px 14px;border:1px solid rgba(0,255,65,0.1);background:rgba(0,255,65,0.02)}
+.cert-item.blue{border-color:rgba(0,136,255,0.1);background:rgba(0,136,255,0.02)}
+.cert-bullet{color:#00ff41;font-size:12px;line-height:1.3;flex-shrink:0}
+.cert-item.blue .cert-bullet{color:#0088ff}
+.cert-text{font-size:11.5px;color:rgba(0,255,65,0.5);line-height:1.5}
+.cert-item.blue .cert-text{color:rgba(0,136,255,0.55)}
+.cert-text strong{color:#00ff41;display:block;font-size:11.5px;margin-bottom:2px}
+.cert-item.blue .cert-text strong{color:#0088ff}
+
+/* CURSOR */
+.cursor{display:inline-block;width:9px;height:1em;background:#00ff41;vertical-align:middle;animation:blink 1s step-end infinite;margin-left:3px;box-shadow:0 0 6px rgba(0,255,65,0.7)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+
+@media(max-width:600px){
+  .container{padding:1.5rem 1rem 4rem}
+  .proj-grid{grid-template-columns:1fr}
+  .stats-row{grid-template-columns:repeat(2,1fr)}
+  .dual-badge{flex-direction:column}
+  .role-divider span{font-size:9px}
+}
+</style>
+</head>
+<body>
+
+<canvas id="matrix"></canvas>
+<div class="scanline"></div>
+<div class="vignette"></div>
+
+<div class="container">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="boot">[  OK  ] Dual-mode profile loaded — security + development stack online</div>
+    <div class="tag">// IDENTITY DECRYPTED — INITIALIZING PROFILE</div>
+    <div class="name">Mohammed<br><span>Fahad P</span></div>
+    <div class="title-line">Pentester &nbsp;/&nbsp; Security Researcher &nbsp;/&nbsp; Backend Developer</div>
+    <div class="dual-badge">
+      <div class="badge-sec">&#9632; OFFENSIVE SECURITY</div>
+      <div class="badge-dev">&#9632; BACKEND DEVELOPMENT</div>
+    </div>
+    <div class="summary">Cybersecurity professional and backend developer with hands-on expertise in web app pentesting, API security, bug bounty research, and building production-grade tools in Go, Python, and Java. Two roles. One mindset: break it, build it, secure it.<span class="cursor"></span></div>
+    <div class="contact-row">
+      <div class="contact-item"><span>&#9654;</span> Kerala, India</div>
+      <div class="contact-item"><span>&#9654;</span> mhdfahadp28@gmail.com</div>
+      <div class="contact-item"><span>&#9654;</span> +91 7736535028</div>
+      <div class="contact-item"><span>&#9654;</span> <a href="https://github.com/FD785" target="_blank">github.com/FD785</a></div>
+      <div class="contact-item"><span>&#9654;</span> <a href="https://www.linkedin.com/in/mohammed-fahad-p" target="_blank">LinkedIn</a></div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-row">
+    <div class="stat-box"><div class="stat-num">10+</div><div class="stat-label">Vulns Found</div></div>
+    <div class="stat-box"><div class="stat-num">20+</div><div class="stat-label">Labs Cleared</div></div>
+    <div class="stat-box blue"><div class="stat-num">6</div><div class="stat-label">Repos</div></div>
+    <div class="stat-box blue"><div class="stat-num">5</div><div class="stat-label">Certs</div></div>
+    <div class="stat-box blue"><div class="stat-num">4</div><div class="stat-label">Languages</div></div>
+  </div>
+
+  <!-- ══════════ SECURITY ══════════ -->
+  <div class="role-divider">
+    <span class="rd-sec">&#9632; OFFENSIVE SECURITY</span>
+    <div class="rd-line rd-line-sec"></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-green"><div class="sec-title">Arsenal</div></div>
+    <div class="skills-grid">
+      <div class="skill-tag">Burp Suite Pro</div>
+      <div class="skill-tag">Nmap</div>
+      <div class="skill-tag">Metasploit</div>
+      <div class="skill-tag">SQLMap</div>
+      <div class="skill-tag">Gobuster</div>
+      <div class="skill-tag">Wireshark</div>
+      <div class="skill-tag">OWASP ZAP</div>
+      <div class="skill-tag">Netcat</div>
+      <div class="skill-tag">Nikto</div>
+      <div class="skill-tag">Kali Linux</div>
+      <div class="skill-tag red">XSS</div>
+      <div class="skill-tag red">SSRF</div>
+      <div class="skill-tag red">IDOR</div>
+      <div class="skill-tag red">CSRF</div>
+      <div class="skill-tag red">CORS</div>
+      <div class="skill-tag red">Auth Bypass</div>
+      <div class="skill-tag red">Business Logic Flaws</div>
+      <div class="skill-tag red">OWASP Top 10</div>
+      <div class="skill-tag dim">VAPT</div>
+      <div class="skill-tag dim">Bug Bounty</div>
+      <div class="skill-tag dim">API Security</div>
+      <div class="skill-tag dim">Active Directory</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-green"><div class="sec-title">Ops Log</div></div>
+    <div class="exp-card">
+      <div class="exp-role">Cyber Security Intern</div>
+      <div class="exp-company">Future Interns — 2026</div>
+      <div class="exp-item">Vulnerability assessments on live websites using Nmap &amp; OWASP ZAP — risk classification and remediation reports.</div>
+      <div class="exp-item">Phishing email analysis — spoofed senders, fake domains, and malicious link identification.</div>
+      <div class="exp-item">API security testing via Postman &amp; Browser DevTools — auth flaws, insecure endpoints, missing rate-limiting.</div>
+    </div>
+    <div class="exp-card">
+      <div class="exp-role">Freelance VAPT Consultant &amp; Security Researcher</div>
+      <div class="exp-company">Independent — 2025 – Present</div>
+      <div class="exp-item">10+ confirmed vulnerabilities through bug bounty &amp; VDP programs with full PoC documentation.</div>
+      <div class="exp-item">Web application VAPT — XSS, SSRF, IDOR, auth bypass, business logic flaws across multiple targets.</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-green"><div class="sec-title">Security Tools</div></div>
+    <div class="proj-grid">
+      <div class="proj-card">
+        <div class="proj-lang lang-go">[ Go ]</div>
+        <div class="proj-name">JSRecon</div>
+        <div class="proj-desc">Offensive recon tool extracting hidden API endpoints, params &amp; hardcoded secrets from JS files via regex &amp; AST parsing.</div>
+        <div class="proj-tags"><span class="proj-tag">recon</span><span class="proj-tag">AST</span><span class="proj-tag">offensive</span></div>
+        <a class="proj-link" href="https://github.com/FD785/JSRecon" target="_blank">&#8599; ./view_repo</a>
+      </div>
+      <div class="proj-card">
+        <div class="proj-lang lang-go">[ Go ]</div>
+        <div class="proj-name">PassGuard</div>
+        <div class="proj-desc">Rule-based password strength &amp; exposure risk analyzer with weak pattern detection for offensive research.</div>
+        <div class="proj-tags"><span class="proj-tag">password</span><span class="proj-tag">analysis</span><span class="proj-tag">ethical</span></div>
+        <a class="proj-link" href="https://github.com/FD785/PassGuard" target="_blank">&#8599; ./view_repo</a>
+      </div>
+      <div class="proj-card">
+        <div class="proj-lang lang-md">[ Report ]</div>
+        <div class="proj-name">OWASP Juice Shop Pentest</div>
+        <div class="proj-desc">Full web app pentest of OWASP Juice Shop aligned with OWASP Top 10 — complete documented methodology &amp; findings.</div>
+        <div class="proj-tags"><span class="proj-tag">OWASP</span><span class="proj-tag">web pentest</span></div>
+        <a class="proj-link" href="https://github.com/FD785/owasp-juice-shop-web-pentest" target="_blank">&#8599; ./view_repo</a>
+      </div>
+      <div class="proj-card">
+        <div class="proj-lang lang-md">[ Report ]</div>
+        <div class="proj-name">Vulnerability Assessment</div>
+        <div class="proj-desc">Professional VA report with structured findings, risk classifications, and remediation guidance for real-world targets.</div>
+        <div class="proj-tags"><span class="proj-tag">VAPT</span><span class="proj-tag">risk</span><span class="proj-tag">report</span></div>
+        <a class="proj-link" href="https://github.com/FD785/vulnerability-assessment-report" target="_blank">&#8599; ./view_repo</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-green"><div class="sec-title">Security Credentials</div></div>
+    <div class="cert-list">
+      <div class="cert-item"><div class="cert-bullet">[+]</div><div class="cert-text"><strong>Certified Penetration Tester v3 (CPTv3)</strong>Red Team Hacker Academy — 2025</div></div>
+      <div class="cert-item"><div class="cert-bullet">[+]</div><div class="cert-text"><strong>Google Cybersecurity Professional Certificate</strong>Google — 2026</div></div>
+      <div class="cert-item"><div class="cert-bullet">[+]</div><div class="cert-text"><strong>PortSwigger Web Security Academy</strong>20+ labs — XSS, SSRF, Auth Bypass &amp; Business Logic Exploitation</div></div>
+    </div>
+  </div>
+
+  <!-- ══════════ DEV ══════════ -->
+  <div class="role-divider">
+    <span class="rd-dev">&#9632; BACKEND DEVELOPMENT</span>
+    <div class="rd-line rd-line-dev"></div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-blue"><div class="sec-title">Dev Stack</div></div>
+    <div class="skills-grid">
+      <div class="skill-tag blue">Java</div>
+      <div class="skill-tag blue">Python</div>
+      <div class="skill-tag blue">Go</div>
+      <div class="skill-tag blue">JavaScript</div>
+      <div class="skill-tag blue">C/C++</div>
+      <div class="skill-tag blue">Flask</div>
+      <div class="skill-tag blue">FastAPI</div>
+      <div class="skill-tag blue">REST APIs</div>
+      <div class="skill-tag blue">MySQL</div>
+      <div class="skill-tag blue">Docker</div>
+      <div class="skill-tag blue">MLflow</div>
+      <div class="skill-tag blue">Scikit-learn</div>
+      <div class="skill-tag blue">Flutter</div>
+      <div class="skill-tag blue">Git / GitHub</div>
+      <div class="skill-tag blue">SDLC</div>
+      <div class="skill-tag blue">Role-Based Access Control</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-blue"><div class="sec-title">Dev Projects</div></div>
+    <div class="proj-grid">
+      <div class="proj-card dev">
+        <div class="proj-lang lang-py">[ Python · Docker · FastAPI ]</div>
+        <div class="proj-name">MLOps Pipeline</div>
+        <div class="proj-desc">End-to-end ML pipeline — RandomForest housing price prediction, MLflow experiment tracking, FastAPI inference API, Docker containerization.</div>
+        <div class="proj-tags"><span class="proj-tag">MLOps</span><span class="proj-tag">Docker</span><span class="proj-tag">FastAPI</span></div>
+        <a class="proj-link" href="https://github.com/FD785/mlops-end-to-end-pipeline" target="_blank">&#8599; ./view_repo</a>
+      </div>
+      <div class="proj-card dev">
+        <div class="proj-lang lang-py">[ Python · Flask · MySQL · Flutter ]</div>
+        <div class="proj-name">NSS Management System</div>
+        <div class="proj-desc">Full-stack platform managing NSS activities across schools. Flask REST APIs, MySQL storage, RBAC for 5 user roles, Flutter cross-platform frontend.</div>
+        <div class="proj-tags"><span class="proj-tag">full-stack</span><span class="proj-tag">RBAC</span><span class="proj-tag">Flutter</span></div>
+      </div>
+      <div class="proj-card dev">
+        <div class="proj-lang lang-sh">[ Shell · systemd ]</div>
+        <div class="proj-name">SRE Linux Reliability</div>
+        <div class="proj-desc">Linux service monitoring, automatic recovery via systemd, and failure simulation for production reliability engineering.</div>
+        <div class="proj-tags"><span class="proj-tag">SRE</span><span class="proj-tag">Linux</span><span class="proj-tag">systemd</span></div>
+        <a class="proj-link" href="https://github.com/FD785/sre-linux-web-reliability" target="_blank">&#8599; ./view_repo</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="sec-header sec-blue"><div class="sec-title">Dev Credentials</div></div>
+    <div class="cert-list">
+      <div class="cert-item blue"><div class="cert-bullet">[+]</div><div class="cert-text"><strong>Introduction to AI and Machine Learning on Google Cloud</strong>Google Cloud</div></div>
+      <div class="cert-item blue"><div class="cert-bullet">[+]</div><div class="cert-text"><strong>Generative AI Model Certificate</strong>NxtWave</div></div>
+    </div>
+  </div>
+
+  <!-- EDUCATION -->
+  <div class="role-divider">
+    <span class="rd-edu">&#9632; EDUCATION</span>
+    <div class="rd-line rd-line-edu"></div>
+  </div>
+  <div class="section">
+    <div class="exp-card">
+      <div class="exp-role">Bachelor of Computer Applications (BCA)</div>
+      <div class="exp-company">University of Calicut, Kerala — 2022 – 2025</div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const c = document.getElementById('matrix');
+const ctx = c.getContext('2d');
+function resize(){ c.width = window.innerWidth; c.height = window.innerHeight; }
+resize();
+window.addEventListener('resize', resize);
+const chars = 'アイウエオカキクケコサシスセソタチツテトナニヌネノ0123456789ABCDEF{}[]<>/\\|!=;()';
+const fs = 14;
+let cols = Math.floor(c.width / fs);
+let drops = Array(cols).fill(1);
+let colColors = Array.from({length: cols}, () => Math.random() > 0.5 ? 'g' : 'b');
+
+function draw(){
+  ctx.fillStyle = 'rgba(0,0,0,0.05)';
+  ctx.fillRect(0, 0, c.width, c.height);
+  ctx.font = fs + 'px Share Tech Mono, monospace';
+  cols = Math.floor(c.width / fs);
+  while(colColors.length < cols) colColors.push(Math.random() > 0.5 ? 'g' : 'b');
+  while(drops.length < cols) drops.push(1);
+  for(let i = 0; i < cols; i++){
+    const ch = chars[Math.floor(Math.random() * chars.length)];
+    const bright = Math.random() > 0.96;
+    if(bright){ ctx.fillStyle = '#ffffff'; ctx.globalAlpha = 0.9; }
+    else if(colColors[i] === 'g'){ ctx.fillStyle = '#00ff41'; ctx.globalAlpha = 0.55; }
+    else { ctx.fillStyle = '#0077ee'; ctx.globalAlpha = 0.45; }
+    ctx.fillText(ch, i * fs, drops[i] * fs);
+    ctx.globalAlpha = 1;
+    if(drops[i] * fs > c.height && Math.random() > 0.975){
+      drops[i] = 0;
+      colColors[i] = Math.random() > 0.5 ? 'g' : 'b';
+    }
+    drops[i]++;
+  }
+}
+setInterval(draw, 50);
+</script>
+</body>
+</html>
